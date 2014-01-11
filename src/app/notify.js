@@ -14,7 +14,7 @@ function notify(){
     message = 'Trckr "No active tracker"';
     loadTrackers(function(data){
       // Find out which tracker is active.
-      for(key in data){
+      for(var key in data){
         message = '';
 
         if(data[key].active) {

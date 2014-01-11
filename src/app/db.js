@@ -57,13 +57,13 @@ var loadTracker = function(timestamp, callback, tracker){
  */
 var loadTrackers = function(callback, from , to){
   if(!from) {
-    var from = new Date();
+    from = new Date();
     from.setHours(0,0,0,0);
     from = from.getTime();
   }
 
   if(!to) {
-    var to = new Date();
+    to = new Date();
     to.setHours(23,59,0,0);
     to = to.getTime();
   }

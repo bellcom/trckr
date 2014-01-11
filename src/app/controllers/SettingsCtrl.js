@@ -5,7 +5,7 @@ function SettingsCtrl($scope){
   $scope.settingsUser = conf.get('user', '');
   $scope.settingsPass = conf.get('pass', '');
   $scope.settingsURL = conf.get('url', '');
-  $scope.settingsNotifyEn = conf.get('notify_enable', 1);
+  $scope.settingsNotifyEn = conf.get('notify_enable', 0);
   $scope.settingsNotifyInt = conf.get('notify_interval', 3);
 
   $scope.saveSettings = function(){
@@ -18,5 +18,5 @@ function SettingsCtrl($scope){
     conf.set('notify_interval', $scope.settingsNotifyInt);
 
     win.reloadDev();
-  }
+  };
 }

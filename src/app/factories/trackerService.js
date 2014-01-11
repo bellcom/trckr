@@ -94,9 +94,7 @@ trckrApp.factory('trackerService', ['$rootScope', function ($rootScope) {
       });
       $rootScope.$broadcast('updateList');
     }
-  }
+  };
 
   return service;
 }]);
-
-

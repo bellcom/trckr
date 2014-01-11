@@ -55,45 +55,45 @@ var utils = (function() {
           user: conf.get('user'),
           pass: conf.get('pass')
         }
-      }
+      };
 
       if(
-          clients['data'] === undefined && 
-          (clients['time'] + ( 6 * 60 * 1000)) >= new Date().getTime()
+          clients.data === undefined && 
+          (clients.time + ( 6 * 60 * 1000)) >= new Date().getTime()
         ){
 
         var clientInterval = setInterval(function(){
-          if(clients['data'] !== undefined){
-            callback(clients['data']);
+          if(clients.data !== undefined){
+            callback(clients.data);
             clearInterval(clientInterval);
           }
         }, 500);
         return;
       }
 
-      if((clients['time'] + ( 6 * 60 * 1000)) <= new Date().getTime()) {
-        clients['time'] = new Date().getTime();
+      if((clients.time + ( 6 * 60 * 1000)) <= new Date().getTime()) {
+        clients.time = new Date().getTime();
         $.post(url + '?q=getClients', data).done(function(data){
-          clients['data'] = data;
+          clients.data = data;
           callback(data);
         }).fail(function(){
-          clients['data'] = {id: 1, name: "Connection Error"}
+          clients.data = {id: 1, name: "Connection Error"};
         });
       }
       else {
-        callback(clients['data']);
+        callback(clients.data);
       }
     },
 
     map_client : function(name, callback, timestamp){
       this.get_clients(function(data){
-        for(key in data){
+        for(var key in data){
           if(data[key].name === name){
             callback(data[key].id, timestamp);
           }
         }
       });
     }
-  }
+  };
   return utils;
 })();

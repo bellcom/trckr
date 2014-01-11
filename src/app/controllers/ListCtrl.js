@@ -13,22 +13,22 @@ function ListCtrl($scope, $modal,  $timeout, $rootScope, $log, trackerService){
       $scope.$apply();
       reload();
     }, 30000);
-  }
+  };
 
   reload();
 
   // Mappings. ->
   $scope.stop = function(tracker){
     trackerService.stopTracker();
-  }
+  };
 
   $scope.start = function(tracker){
     trackerService.startTracker(tracker);
-  }
+  };
 
   $scope.del = function(tracker){
     trackerService.deleteTracker(tracker);
-  }
+  };
 
   $scope.saveTrackers = function(tracker){
     // Update the time in ms from user input;
@@ -37,18 +37,18 @@ function ListCtrl($scope, $modal,  $timeout, $rootScope, $log, trackerService){
       tracker.start = new Date().getTime();
     }
     trackerService.updateTrackers();
-  }
+  };
 
   $scope.setTime = function(tracker){
     tracker.formatted_time = utils.format_time(utils.get_time(tracker));
-  }
+  };
   // <- Mappings.
 
   // Functions. ->
   // Format time for tracker
   $scope.time = function(tracker){
     return utils.format_time(utils.get_time(tracker));
-  }
+  };
 
   $scope.timeTotal = function(){
     var total_time = 0;
@@ -58,8 +58,6 @@ function ListCtrl($scope, $modal,  $timeout, $rootScope, $log, trackerService){
     });
 
     return utils.format_time(total_time);
-  }
+  };
   // <- Functions.
 }
-
-

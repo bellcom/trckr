@@ -12,7 +12,7 @@ $.fn.addTagger = function(mode, id){
   this.addClass('tagger-input');
   this.attr('data-inputid', number);
  
-  if($('.addtagger').length == 0){
+  if($('.addtagger').length === 0){
     $('body').append('<ul class="addtagger dropdown-menu" style="position: absolute; display:none; z-index: 3000;"></ul>');
 
     utils.get_clients(function(data){
@@ -58,7 +58,7 @@ $.fn.addTagger = function(mode, id){
       }
     });
 
-    function searchClient(el){
+    var searchClient = function(el){
       var val = $(el).val();
       var chr = val.slice(-1);
       var input_client = val.split('@');
@@ -93,18 +93,19 @@ $.fn.addTagger = function(mode, id){
       else {
         $(taggerId).show();
       }
-    }
+    };
 
     // Function for handling client selection
     var selectClient = function(){
       var val = $('.input' + lastfocus).val();
       var input_client = val.split('@');
-      
+      var text;
+
       if(input_client.length === 2 ){
-        var text = input_client[0] + '@' + $('.tagger-client.active').text();
+        text = input_client[0] + '@' + $('.tagger-client.active').text();
       }
       else {
-        var text = $('.tagger-client.active').text();
+        text = $('.tagger-client.active').text();
       }
 
       // If no client is active, just let the text be.
@@ -116,7 +117,7 @@ $.fn.addTagger = function(mode, id){
       $('.input' + lastfocus).focus();
     
       $('.input'+lastfocus).trigger('tagger:select', {id: lastfocus, text: text});
-    }
+    };
 
       $('body').on('keydown', '.tagger-input', function(event){
       // Movement in list of clients

@@ -34,11 +34,18 @@ module.exports = function(grunt){
         }]
       }
 
+    },
+    jshint: {
+      all: [
+        'src/app/**/*.js',
+        'src/inc/addTagger.js'
+      ]
     }
   });
 
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // By default build and create archives
   grunt.registerTask('default', [

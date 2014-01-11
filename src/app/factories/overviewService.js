@@ -46,7 +46,7 @@ trckrApp.factory('overviewService', ['$rootScope', '$http', function ($rootScope
           pass: conf.get('pass')
         },
         tracker: tracker
-      }
+      };
 
       $http.post(url + '?q=register', data).success(function(data){
         if(data.status === "success"){
@@ -60,7 +60,7 @@ trckrApp.factory('overviewService', ['$rootScope', '$http', function ($rootScope
     },
 
     getChart: function(){
-      var labels = new Array();
+      var labels = [];
       var datasets = [{
           fillColor : "rgba(151,187,205,0)",
           strokeColor : "#f1c40f",
@@ -93,7 +93,7 @@ trckrApp.factory('overviewService', ['$rootScope', '$http', function ($rootScope
 
       return {labels: labels, datasets: datasets};
     }
-  }
+  };
 
   return service;
 }]);
