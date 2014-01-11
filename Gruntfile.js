@@ -12,11 +12,37 @@ module.exports = function(grunt){
       },
       src: ['./src/**/*'] // Your node-wekit app
     },
+    compress: {
+      mac: {
+        options: {
+          archive: 'build/trckr-osx-ia32.zip'
+        },
+        files: [{
+          expand: true,
+          cwd: './build/releases/trckr/mac/',
+          src: ['**/*'],
+        }]
+      },
+      linux: {
+        options: {
+          archive: 'build/trckr-linux-x64.zip'
+        },
+        files: [{
+          expand: true,
+          cwd: './build/releases/trckr/linux64/',
+          src: ['**/*'],
+        }]
+      }
+
+    }
   });
 
   grunt.loadNpmTasks('grunt-node-webkit-builder');
+  grunt.loadNpmTasks('grunt-contrib-compress');
 
+  // By default build and create archives
   grunt.registerTask('default', [
-    'nodewebkit'
+    'nodewebkit',
+    'compress'
   ]);
 };
