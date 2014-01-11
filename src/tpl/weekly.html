@@ -1,0 +1,32 @@
+<div class="span6">
+  <h3>Overview</h3>
+  <div>
+    <form class="form-inline">
+      <div class="input-append">
+        <input class="input-small" datepicker-popup="dd-MM-yyyy" ng-model="from_date" is-open="fromOpen" type="text">
+        <span class="add-on"><i class="icon-calendar"></i></span>
+      </div>
+
+      <div class="input-append">
+        <input class="input-small" datepicker-popup="dd-MM-yyyy" ng-model="to_date" is-open="toOpen" type="text">
+        <span class="add-on"><i class="icon-calendar"></i></span>
+      </div>
+      <button class="btn" ng-click="updateOverview()"><i class="icon-refresh"></i></button>
+    </form>
+
+
+    <table class="table table-condensed" >
+      <tr ng-repeat="tracker in overview">
+        <td>
+          <span class="clearfix"><span class="label">{{weekDay(tracker)}}</span></span>
+          <span >{{tracker.name}}</a>@{{tracker.client}}
+              {{tracker.time}}
+        </span>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+      <div ng-repeat="tracker in daily_overview">
+        <span>{{time(tracker)}}</span>
+      </div>

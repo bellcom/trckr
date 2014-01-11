@@ -1,0 +1,9 @@
+{
+  "name": "trckr",
+  "main": "index.html",
+  "version": "0.4",
+  "window": {
+    "toolbar" : false,
+    "icon": "img/icon.png"
+  }
+}

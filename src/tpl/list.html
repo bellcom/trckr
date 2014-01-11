@@ -1,0 +1,36 @@
+<div ng-controller="CreateCtrl">
+  <form>
+    <div class="input-append input-trckr-add">
+      <input type="text" name="input" typeaheadtagger="" datasets="example" ng-model="tracker.input">
+      <button class="btn btn-success" ng-click="save()"><i class="icon-time icon-white"></i> Start</button>
+    </div>
+  </form>
+</div>
+<div ng-controller="ListCtrl">
+  <table class="unstyled table table-condensed">
+    <tr ng-repeat="tracker in trackers" ng-class="{info:tracker.active}" >
+      <td>
+        <span ng-class="{active:tracker.active}">
+          {{tracker.name}}</a>@{{tracker.client}}
+          <edit-tracker></edit-tracker>
+          <span class="pull-right">
+            <span class="dropdown">
+              <a class="label label-info">{{time(tracker)}} </a>
+            </span>
+            <span ng-hide="tracker.registerstatus=='success'" >
+              <span ng-hide="tracker.active" ng-click="start(tracker)" class="btn btn-mini btn-success"><i class="icon-play icon-white"></i></span>
+              <span ng-show="tracker.active" ng-click="stop(tracker)" class="btn btn-mini btn-warning"><i class="icon-pause icon-white"></i></span>
+              <span ng-show="editTracker" ng-click="editTracker=false; saveTrackers(tracker)" class="btn btn-mini btn-success"><i class="icon-ok icon-white"></i></span>
+              <span ng-hide="editTracker" ng-click="editTracker=true; setTime(tracker)" class="btn btn-mini"><i class="icon-edit"></i></span>
+              <span ng-click="del(tracker)" class="btn btn-mini"><i class="icon-trash"></i></span>
+            </span>
+          </span>
+        </span>
+      </td>
+    </tr>
+    <tr>
+      <td>Total in list: {{timeTotal()}}
+      </td>
+    </tr>
+  </table>
+</div>

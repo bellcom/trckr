@@ -1,0 +1,86 @@
+body {
+  padding-left: 45px;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/**
+ * Menu
+ */
+.menu-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #002b36;
+  height: 100%;
+}
+
+.menu a {
+  display: block;
+  padding: 8px;
+}
+
+.menu .active a,
+.menu a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.menu ul {
+  margin: 0;
+}
+
+.menu ul li {
+  display: block;
+}
+
+/**
+ * Trckr add input
+ */
+.input-trckr-add{
+  width: 75%;
+}
+
+.input-trckr-add input{
+  width: 100%
+}
+
+/**
+ * Font adjustments for bootstrap
+ */
+legend {
+  font-size: 18px;
+  line-height: 30px;
+}
+
+/**
+ * CSS spinner
+ */
+.loading {
+  display: inline-block;
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #c30;
+  border-top: 2px solid #c30;
+  border-radius: 100%;
+  height: 10px;
+  width: 10px;
+  -webkit-animation: spin .6s infinite linear;
+}
+@-webkit-keyframes "spin" {
+ from {
+   -webkit-transform: rotate(0deg);
+   transform: rotate(0deg);
+ }
+ to {
+   -webkit-transform: rotate(359deg);
+   transform: rotate(359deg);
+ }
+}
+
+/**
+ * Help icon
+ */
+.menu-help {
+  bottom: 0;
+  position: absolute;
+}

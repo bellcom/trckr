@@ -1,0 +1,59 @@
+<!doctype html>
+<html ng-app="trackers">
+  <head>
+    <title>Trckr</title>
+    <script src="inc/jquery-1.10.2.min.js"></script>
+    <script src="vendor/angular.min.js"></script>
+    <script src="vendor/angular-route.js"></script>
+    <script src="vendor/mousetrap.min.js"></script>
+    <script src="inc/addTagger.js"></script>
+    <script src="inc/ui-bootstrap-tpls-0.6.0.min.js"></script>
+
+    <script src="app/index.js"></script>
+    
+    <script src="app/controllers/HeaderCtrl.js"></script>
+    <script src="app/controllers/ListCtrl.js"></script>
+    <script src="app/controllers/CreateCtrl.js"></script>
+    <script src="app/controllers/OverviewCtrl.js"></script>
+    <script src="app/controllers/SettingsCtrl.js"></script>
+    
+    <script src="app/factories/overviewService.js"></script>
+    <script src="app/factories/trackerService.js"></script>
+    
+    <script src="app/directives/editTracker.js"></script>
+    <script src="app/directives/addTagger.js"></script>
+    
+    <script src="app/utils.js"></script>
+    <script src="app/db.js"></script>
+    <script src="app/conf.js"></script>
+    <script src="app/notify.js"></script>
+    <script src="app/keybind.js"></script>
+    
+    <link href="vendor/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="menu-container" ng-controller="HeaderCtrl">
+      <div class="menu">
+        <ul> 
+          <li ng-class="{active: isActive('/')}">
+            <a href="#/" title="Tracker list"><i class="icon-time icon-white"></i></a>
+          </li>
+          <li ng-class="{active: isActive('/overview')}">
+            <a href="#/overview" title="Overview"><i class="icon-list icon-white"></i></a>
+          </li>
+          <li ng-class="{active: isActive('/settings')}">
+            <a href="#/settings" title="Settings"><i class="icon-wrench icon-white"></i></a>
+          </li>
+          <li class="menu-help">
+            <a onclick="win.showDevTools();"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="container">
+      <div ng-view class="row-fluid">
+      </div>
+    </div>
+  </body>
+</html>
