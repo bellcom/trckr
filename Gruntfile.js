@@ -49,6 +49,7 @@ module.exports = function(grunt){
 
   // By default build and create archives
   grunt.registerTask('default', [
+    'jshint',
     'nodewebkit',
     'compress'
   ]);
