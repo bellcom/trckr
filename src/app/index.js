@@ -4,6 +4,8 @@
 // Load native UI library
 var gui = require('nw.gui'); //or global.window.nwDispatcher.requireNwGui() (see https://github.com/rogerwang/node-webkit/issues/707)
 
+console.log(conf.get('window_close', false));
+
 // Get the current window
 var win = gui.Window.get();
 
@@ -23,5 +25,8 @@ trckrApp.config(['$routeProvider', function($routeProvider) {
     .otherwise({
       redirectTo: '/'
     });
-  }]);
+}]);
 
+win.on('close', function(){
+  conf.set('window_close', new Date().getTime());
+});

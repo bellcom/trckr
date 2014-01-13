@@ -9,6 +9,11 @@
     <script src="inc/addTagger.js"></script>
     <script src="inc/ui-bootstrap-tpls-0.6.0.min.js"></script>
 
+    <script src="app/utils.js"></script>
+    <script src="app/db.js"></script>
+    <script src="app/conf.js"></script>
+    <script src="app/notify.js"></script>
+    <script src="app/keybind.js"></script>
     <script src="app/index.js"></script>
     
     <script src="app/controllers/HeaderCtrl.js"></script>
@@ -23,32 +28,39 @@
     <script src="app/directives/editTracker.js"></script>
     <script src="app/directives/addTagger.js"></script>
     
-    <script src="app/utils.js"></script>
-    <script src="app/db.js"></script>
-    <script src="app/conf.js"></script>
-    <script src="app/notify.js"></script>
-    <script src="app/keybind.js"></script>
-    
     <link href="vendor/bootstrap-combined.min.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
   </head>
   <body>
-    <div class="menu-container" ng-controller="HeaderCtrl">
-      <div class="menu">
-        <ul> 
-          <li ng-class="{active: isActive('/')}">
-            <a href="#/" title="Tracker list"><i class="icon-time icon-white"></i></a>
-          </li>
-          <li ng-class="{active: isActive('/overview')}">
-            <a href="#/overview" title="Overview"><i class="icon-list icon-white"></i></a>
-          </li>
-          <li ng-class="{active: isActive('/settings')}">
-            <a href="#/settings" title="Settings"><i class="icon-wrench icon-white"></i></a>
-          </li>
-          <li class="menu-help">
-            <a onclick="win.showDevTools();"></a>
-          </li>
-        </ul>
+    <div class="header" ng-controller="HeaderCtrl">
+      <div class="alert" ng-if="tracker.forgot">
+        Yesterday you forgot this one:
+        <strong>{{tracker.name}}@{{tracker.client}} </strong><br />
+        Trckr was closed at: {{tracker.close}} <br />
+        Which gives us: <strong>{{tracker.formatted_time}}</strong>
+        <edit-tracker></edit-tracker>
+        <div class="pull-right">
+          <span ng-hide="editTracker" ng-click="editTracker=true;" class="btn btn-mini"><i class="icon-edit"></i></span>
+          <button class="btn btn-mini btn-success" ng-click="editTracker=false; saveTrackers(tracker)"><i class="icon-ok icon-white"></i></button>
+        </div>
+      </div >
+      <div class="menu-container">
+        <div class="menu">
+          <ul> 
+            <li ng-class="{active: isActive('/')}">
+              <a href="#/" title="Tracker list"><i class="icon-time icon-white"></i></a>
+            </li>
+            <li ng-class="{active: isActive('/overview')}">
+              <a href="#/overview" title="Overview"><i class="icon-list icon-white"></i></a>
+            </li>
+            <li ng-class="{active: isActive('/settings')}">
+              <a href="#/settings" title="Settings"><i class="icon-wrench icon-white"></i></a>
+            </li>
+            <li class="menu-help">
+              <a onclick="win.showDevTools();"></a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="container">

@@ -15,10 +15,13 @@ var utils = (function() {
     },
 
     // Get the time in ms from a tracker.
-    get_time : function(tracker) {
+    get_time : function(tracker, endtime) {
       var time = 0;
 
-      if(tracker.active){
+      if(endtime !== undefined) {
+        time = (endtime - tracker.start + tracker.time);
+      }
+      else if(tracker.active){
         time = (new Date().getTime() - tracker.start + tracker.time);
       }
       else {
