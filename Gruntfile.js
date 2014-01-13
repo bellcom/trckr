@@ -19,7 +19,7 @@ module.exports = function(grunt){
         },
         files: [{
           expand: true,
-          cwd: './build/releases/trckr/mac/',
+          cwd: './build/releases/Trckr/mac/',
           src: ['**/*'],
         }]
       },
@@ -29,7 +29,7 @@ module.exports = function(grunt){
         },
         files: [{
           expand: true,
-          cwd: './build/releases/trckr/linux64/',
+          cwd: './build/releases/Trckr/linux64/',
           src: ['**/*'],
         }]
       }
