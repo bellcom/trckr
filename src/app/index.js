@@ -27,4 +27,5 @@ trckrApp.config(['$routeProvider', function($routeProvider) {
 
 win.on('close', function(){
   conf.set('window_close', new Date().getTime());
+  this.close(true);
 });
