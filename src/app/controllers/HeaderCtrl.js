@@ -28,8 +28,8 @@ function HeaderCtrl($scope, $location, overviewService){
 
   var d = new Date(),
       msSinceMidnight = d.getTime() - d.setHours(0,0,0,0),
-      //yesterday = new Date(new Date().setDate(new Date().getDate()-1)),
-      //day_before_yesterday = new Date(new Date().setDate(new Date().getDate()-2)),
+      yesterday = new Date(new Date().setDate(new Date().getDate()-1)),
+      day_before_yesterday = new Date(new Date().setDate(new Date().getDate()-2)),
       from_date = day_before_yesterday.getTime() - msSinceMidnight;
       to_date = yesterday.setHours(23, 59, 0, 0);
 
