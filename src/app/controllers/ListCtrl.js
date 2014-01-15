@@ -4,12 +4,17 @@
 function ListCtrl($scope, $modal,  $timeout, $rootScope, $log, trackerService){
   $scope.trackers = trackerService.getTrackers();
 
+  $rootScope.$on('reloadList', function(){
+    $scope.trackers = trackerService.getTrackers();
+  });
+
   $rootScope.$on('updateList', function(){
     $scope.$apply();
   });
 
   // Regularly update $scope
-  var reload = function(){$timeout(function(){
+  var reload = function(){
+    $timeout(function(){
       $scope.$apply();
       reload();
     }, 30000);

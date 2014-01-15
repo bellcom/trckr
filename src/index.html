@@ -34,7 +34,14 @@
   <body>
     <div class="header" ng-controller="HeaderCtrl">
       <div class="alert" ng-if="tracker.forgot">
-        Yesterday you forgot this one:
+
+        <button ng-if="suspend" type="button" class="close" ng-click="ignoreSuspend()" data-dismiss="alert">&times;</button>
+        <div ng-if="suspend">
+          The app was suspended, this was left running:
+        </div >
+        <div ng-if="!suspend">
+          Yesterday you forgot this one:
+        </div>
         <strong>{{tracker.name}}@{{tracker.client}} </strong><br />
         Trckr was closed at: {{tracker.close}} <br />
         Which gives us: <strong>{{tracker.formatted_time}}</strong>
