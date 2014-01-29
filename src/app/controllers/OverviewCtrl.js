@@ -73,6 +73,16 @@ function OverviewCtrl($scope, $timeout, $rootScope, overviewService){
     return utils.format_time(utils.get_time(tracker));
   };
 
+  $scope.timeTotal = function(){
+    var total_time = 0;
+
+    angular.forEach($scope.trackers, function(tracker, key){
+      total_time += utils.get_time(tracker);
+    });
+
+    return utils.format_time(total_time);
+  };
+
   function updateOverview() {
     // Set up time on dates.
     // So we show from midnight to midnight on chosen dates.
