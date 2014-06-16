@@ -41,7 +41,7 @@ var utils = (function() {
         min = "0" + min;
       }
 
-      var hrs = Math.floor(sec / 60 / 60 % 60);
+      var hrs = Math.floor(sec / 60 / 60);
 
       if(hrs < 10) {
         hrs = "0" + hrs;

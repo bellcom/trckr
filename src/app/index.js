@@ -12,7 +12,7 @@ var trckrApp = angular.module('trackers',  ['ui.bootstrap', 'ngRoute']);
 trckrApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider
     .when('/', {
-      templateUrl: 'tpl/list.html',  
+      templateUrl: 'tpl/list.html',
     })
     .when('/overview', {
       templateUrl: 'tpl/overview.html',
@@ -24,6 +24,27 @@ trckrApp.config(['$routeProvider', function($routeProvider) {
       redirectTo: '/'
     });
 }]);
+
+trckrApp.filter('filterTrackers', function() {
+  return function(items, field){
+    if (!field){
+      return items;
+    }
+    var result = [];
+    var searchText = field.toLowerCase();
+
+    angular.forEach(items, function(value, key){
+      if
+      ( value.name.toLowerCase().indexOf(searchText) !== -1 ||
+      value.client.toLowerCase().indexOf(searchText) !== -1
+      ){
+        result.push(value);
+      }
+
+    });
+    return result;
+  };
+});
 
 win.on('close', function(){
   conf.set('window_close', new Date().getTime());

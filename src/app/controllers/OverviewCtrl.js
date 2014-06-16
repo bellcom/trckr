@@ -1,14 +1,14 @@
 /**
  * OverviewCtrl.js
  */
-function OverviewCtrl($scope, $timeout, $rootScope, overviewService){
+function OverviewCtrl($scope, $timeout, $rootScope, overviewService, filterTrackersFilter){
   // Set up datepickers.
   $scope.to_date = new Date();
   // Crazy oneliner for "yesterday".
   $scope.from_date = new Date(new Date().setDate(new Date().getDate()-1));
 
   updateOverview();
-  
+
   $scope.clients = [];
   utils.get_clients(function(data){
     for(var key in data){
@@ -58,7 +58,7 @@ function OverviewCtrl($scope, $timeout, $rootScope, overviewService){
     }
     overviewService.updateTrackers();
   };
-  
+
   $scope.setTime = function(tracker){
     tracker.formatted_time = utils.format_time(utils.get_time(tracker));
   };
@@ -76,7 +76,10 @@ function OverviewCtrl($scope, $timeout, $rootScope, overviewService){
   $scope.timeTotal = function(){
     var total_time = 0;
 
-    angular.forEach($scope.trackers, function(tracker, key){
+    // Apply same filter as on view
+    var trackers = filterTrackersFilter($scope.trackers, $scope.searchText);
+
+    angular.forEach(trackers, function(tracker, key){
       total_time += utils.get_time(tracker);
     });
 
