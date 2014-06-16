@@ -1,6 +1,6 @@
 // Focus input
 Mousetrap.bind(['command+n', 'ctrl+n'], function(e) {
-  $('.input-trckr-add input').focus();
+  $('.input-trckr-add input:first').focus();
   return false;
 });
 

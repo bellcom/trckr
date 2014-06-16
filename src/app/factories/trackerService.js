@@ -11,27 +11,24 @@ trckrApp.factory('trackerService', ['$rootScope', function ($rootScope) {
       if(!tracker.input){
         return;
       }
-
       // Make sure we dont have two active trackers.
       service.stopTracker();
 
-      var input = tracker.input.split("@");
       var time = 0;
+      var input = tracker.input;
 
-      if(input[0][0] === "-"){
-        var i = input[0].split(" ");
+      if(input[0] === "-"){
+        var i = input.split(" ");
         time = i[0].replace("-", "") * 1000 * 60;
         i.splice(0, 1);
         // Replace initial value with task name
-        input[0] = i.join(" ");
+        input = i.join(" ");
       }
 
       // Tracker info
-      var name = input[0];
-      var client = '' ;
-      if(input[1]){
-        client = input[1];
-      }
+      var name = input;
+      var client = tracker.client ;
+      
       var start = new Date().getTime();
 
       service.trackers[start] = {

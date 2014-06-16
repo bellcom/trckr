@@ -8,6 +8,13 @@ function ListCtrl($scope, $modal,  $timeout, $rootScope, $log, trackerService){
     $scope.trackers = trackerService.getTrackers();
   });
 
+  $scope.clients = [];
+  utils.get_clients(function(data){
+    for(var key in data){
+      $scope.clients.push( {id: data[key].id, name: data[key].name} );
+    }
+  });
+
   $rootScope.$on('updateList', function(){
     $scope.$apply();
   });
