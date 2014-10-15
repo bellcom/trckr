@@ -1,4 +1,5 @@
 /build
+/nw
 /node_modules
 /src/components
 *.swp
