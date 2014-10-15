@@ -1,0 +1,28 @@
+.btn-start-task {
+  border-top-left-radius: 3px !important;
+  border-bottom-left-radius: 3px !important;
+  margin-left: 0 !important;
+}
+
+.col-actions {
+  min-width: 100px;
+}
+
+.btn-disabled {
+  color: gray;
+  border: 1px solid lightgray;
+  cursor: default;
+}
+
+.btn-disabled:hover {
+  color: gray;
+}
+
+.sneaky-dev-console {
+  display: block;
+  height: 10px;
+  width: 10px;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+}

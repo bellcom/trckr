@@ -1,0 +1,65 @@
+<span class="btn btn-sm btn-default pull-right" ng-click="editDates = !editDates"><span class="glyphicon glyphicon-filter"></span></span>
+<div ng-show="editDates">
+  <div style="display:inline-block; min-height:290px;">
+  <b>From</b>
+      <datepicker ng-model="dateFrom" datepicker-options="dateOptions" show-weeks="true" class="well well-sm"></datepicker>
+  </div>
+  <div style="display:inline-block; min-height:290px;">
+  <b>To</b>
+      <datepicker ng-model="dateTo" show-weeks="true" class="well well-sm"></datepicker>
+  </div>
+</div>
+
+<table class="table table-condensed">
+  <thead>
+    <th>Time</th>
+    <th>Actions</th>
+    <th>Task / description</th>
+    <th>Case</th>
+    <th>Register</th>
+  </thead>
+  <tr ng-repeat="task in tasks | object2Array | orderBy:'id':true" ng-class="task.active ? 'success' : '';">
+    <td>
+      <b>{{timeTotal(task)}}</b>
+    </td>
+    <td class="col-actions">
+      <div class="btn-group">
+        <span ng-if="task.register_info" class="btn btn-disabled btn-xs">
+          <span class="glyphicon glyphicon-time"></span>
+        </span>
+        <span ng-show="task.active" class="btn btn-warning btn-xs" ng-click="stopTask(task.id)">
+          <span class="glyphicon glyphicon-pause"></span>
+        </span>
+        <span ng-hide="task.active || task.register_info" class="btn btn-success btn-start-task btn-xs" ng-click="startTask(task.id)">
+          <span class="glyphicon glyphicon-play"></span>
+        </span>
+        <span class="btn btn-default btn-xs" ng-click="editTask(task)">
+          <span class="glyphicon glyphicon-edit"></span>
+        </span>
+        <span class="btn btn-default btn-xs" ng-click="task.delete = !task.delete">
+          <span class="glyphicon glyphicon-trash"></span>
+        </span>
+        <span ng-if="task.delete" class="btn btn-danger btn-xs" ng-click="deleteTask(task.id)">
+          <span class="glyphicon glyphicon-ok"></span>
+        </span>
+      </div>
+    </td>
+    <td>
+      <i>{{task.task}}</i> /
+      {{task.description}}
+    </td>
+    <td>
+      {{task.case_name}}
+    </td>
+    <td>
+      <span ng-hide="task.active || task.register_info || task.saving_to_crm" class="btn btn-primary btn-xs" ng-click="registerTask(task)">
+        <span class="glyphicon glyphicon-floppy-disk"></span>
+      </span>
+      <span ng-show="task.register_info" class="btn btn-success btn-xs" ng-click="editTask(task)">
+        <span class="glyphicon glyphicon-floppy-saved"></span>
+      </span>
+
+      <span class="btn btn-xs"><span ng-show="task.saving_to_crm" class="glyphicon glyphicon-cloud-upload"></span></span>
+    </td>
+  </tr>
+</table>

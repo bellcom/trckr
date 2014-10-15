@@ -1,0 +1,33 @@
+<div class="form-group">
+  <form ng-submit="ok()">
+    <input autofocus type="text" placeholder="Task" ng-model="task.task" typeahead="story.name for story in stories | filter:$viewValue | limitTo:20" class="form-control" typeahead-on-select="selectStory($item, $model, $label)">
+
+    <input type="text" placeholder="Description" ng-model="task.description" class="form-control">
+
+    <input type="text" placeholder="Case" ng-model="task.case_name" typeahead="case.name for case in cases | filter:$viewValue | limitTo:20" class="form-control" typeahead-on-select="selectCase($item, $model, $label, task)">
+
+    <input type="submit" class="ng-hide" value="Submit" />
+  </form>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+      <p>Task info:</p>
+      {{task_estimate}}
+    </div>
+    <div class="col-xs-6">
+      <p>Time info:</p>
+      <span ng-click="tabs[2].active = true">{{time_used_formatted}}</span>
+      </span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <progressbar class="progress-striped" value="percent_used" type="{{alert.type}}">{{percent_used}}%</progressbar>
+
+      <div ng-show="alert.show" >
+        <alert type="{{alert.type}}" ><span class="glyphicon glyphicon-exclamation-sign"></span> {{alert.msg}}</alert>
+      </div>
+    </div>
+</div>
+
