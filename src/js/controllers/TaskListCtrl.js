@@ -74,6 +74,16 @@ angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $h
     });
   };
 
+  $scope.listTotal = function() {
+    var total_minutes = 0;
+
+    angular.forEach($scope.tasks, function(task, key) {
+      total_minutes += calculate_total_minutes_for_task(task);
+    });
+
+    return format_minutes_to_time(total_minutes);
+  };
+
   $scope.timeTotal = function(task) {
     return calculate_total_for_task(task);
   };

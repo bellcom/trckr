@@ -75,11 +75,13 @@ angular.module('trckr').controller('ModalCreateCtrl', function($scope, $http, $m
   $scope.selectStory = function($item, $model, $label) {
     var project_slug = $item.project_slug;
     var story_id = $item.story_id;
-
-    extService.getStoryInfo(project_slug, story_id)
-      .then(function(data){
-        $scope.task_estimate = data;
-      });
+    if ($item.estimate === undefined) {
+      extService.getStoryInfo(project_slug, story_id)
+        .then(function(data){
+          $scope.task_estimate = data;
+        });
+    }
+    $scope.task_estimate = $item.estimate;
   };
 
   $scope.selectCase = function($item, $model, $label, task) {

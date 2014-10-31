@@ -67,13 +67,19 @@ function format_minutes_to_time(minutes) {
 }
 
 function calculate_total_for_task(task) {
+  var total_diff = calculate_total_minutes_for_task(task);
+
+  return format_minutes_to_time(total_diff);
+}
+
+function calculate_total_minutes_for_task(task) {
   var total_diff = 0;
   angular.forEach(task.time_entries, function(value, key) {
     var minutes = calculate_minutes_for_time_entry(value);
     total_diff += minutes;
   });
 
-  return format_minutes_to_time(total_diff);
+  return total_diff;
 }
 
 function calculate_minutes_for_time_entry(time_entry) {
