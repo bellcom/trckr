@@ -67,7 +67,3 @@ angular.module('trckr').controller('CreateCtrl', function($scope, $http, $modal,
     });
   };
 });
-
-
-
-

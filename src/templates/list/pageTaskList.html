@@ -8,6 +8,10 @@
   <b>To</b>
       <datepicker ng-model="dateTo" show-weeks="true" class="well well-sm"></datepicker>
   </div>
+  <a class="btn btn-sm btn-default" ng-click="resetDate()">Today</a>
+  <label>
+    <input ng-model="alwaysIncludeUnregistered" type="checkbox">Always include all unregistered
+  </label>
 </div>
 
 <table class="table table-condensed">
@@ -16,14 +20,17 @@
     <th>Actions</th>
     <th>Task / description</th>
     <th>Case</th>
-    <th>Register</th>
   </thead>
-  <tr ng-repeat="task in tasks | object2Array | orderBy:'id':true" ng-class="task.active ? 'success' : '';">
+  <tr ng-repeat-start="task in tasks | object2Array | orderBy:'id':true" class="active date-row">
+    <td colspan="4" ng-if="showDate(task)"><small><i>{{rowDate}}</i></small></td>
+  </tr>
+  <tr ng-repeat-end ng-class="task.active ? 'success' : '';">
     <td>
       <b>{{timeTotal(task)}}</b>
     </td>
     <td class="col-actions">
       <div class="btn-group">
+        <!-- start -->
         <span ng-if="task.register_info" class="btn btn-disabled btn-xs">
           <span class="glyphicon glyphicon-time"></span>
         </span>
@@ -33,16 +40,38 @@
         <span ng-hide="task.active || task.register_info" class="btn btn-success btn-start-task btn-xs" ng-click="startTask(task.id)">
           <span class="glyphicon glyphicon-play"></span>
         </span>
+        <!-- /start -->
+
+        <!-- edit -->
         <span class="btn btn-default btn-xs" ng-click="editTask(task)">
           <span class="glyphicon glyphicon-edit"></span>
         </span>
+        <!-- /edit -->
+
+        <!-- register -->
+        <span ng-hide="task.active || task.register_info || task.saving_to_crm" class="btn btn-primary btn-xs" ng-click="registerTask(task)">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+        </span>
+        <span ng-show="task.active" class="btn btn-disabled btn-xs">
+          <span class="glyphicon glyphicon-floppy-disk"></span>
+        </span>
+        <span ng-show="task.register_info" class="btn btn-success btn-xs" ng-click="editTask(task)">
+          <span class="glyphicon glyphicon-floppy-saved"></span>
+        </span>
+
+        <span ng-show="task.saving_to_crm" class="btn btn-xs"><span class="glyphicon glyphicon-cloud-upload"></span></span>
+        <!-- /register -->
+
+        <!-- delete buttons -->
         <span class="btn btn-default btn-xs" ng-click="task.delete = !task.delete">
           <span class="glyphicon glyphicon-trash"></span>
         </span>
         <span ng-if="task.delete" class="btn btn-danger btn-xs" ng-click="deleteTask(task.id)">
           <span class="glyphicon glyphicon-ok"></span>
         </span>
+        <!-- /delete -->
       </div>
+
     </td>
     <td>
       <i>{{task.task}}</i> /
@@ -51,26 +80,11 @@
     <td>
       {{task.case_name}}
     </td>
-    <td>
-      <span ng-hide="task.active || task.register_info || task.saving_to_crm" class="btn btn-primary btn-xs" ng-click="registerTask(task)">
-        <span class="glyphicon glyphicon-floppy-disk"></span>
-      </span>
-      <span ng-show="task.register_info" class="btn btn-success btn-xs" ng-click="editTask(task)">
-        <span class="glyphicon glyphicon-floppy-saved"></span>
-      </span>
-
-      <span class="btn btn-xs"><span ng-show="task.saving_to_crm" class="glyphicon glyphicon-cloud-upload"></span></span>
-    </td>
   </tr>
   <tr>
     <td>
       <b>{{listTotal()}}</b>
     </td>
-
-    <td colspan="3">
-    </td>
-
-    <td>
-    </td>
+    <td colspan="3"> </td>
   </tr>
 </table>

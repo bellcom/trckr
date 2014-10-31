@@ -42,21 +42,36 @@
     <td></td>
   </tr>
 </table>
+
 <!-- Table overview for CRM info -->
-<!--<div class="pull-right"><span class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"</span></span></div>-->
+<div ng-show="task.register_info" class="pull-right"><span class="btn btn-default btn-xs" ng-click="registerEdit = !registerEdit; prepareRegisterEdit()"><span class="glyphicon glyphicon-edit"</span></span></div>
 <h4>CRM</h4>
 <span ng-hide="task.register_info">Not registered</span>
-<table ng-show="task.register_info" class="table table-condensed">
-  <tr>
-    <td>Registered</td>
-    <td>{{task.register_info.time_length}}</td>
-  </tr>
-  <tr>
-    <td>Case</td>
-    <td>{{task.register_info.case_id}}</td>
-  </tr>
-  <tr>
-    <td>Date</td>
-    <td>{{task.register_info.date_entered}}</td>
-  </tr>
-</table>
+<form  ng-show="task.register_info" ng-submit="updateRegister()">
+  <table class="table table-condensed">
+    <tr>
+      <td>Registered</td>
+      <td ng-hide="registerEdit">{{task.register_info.time_length}}</td>
+      <td ng-show="registerEdit"><input type="text" class="form-control" ng-model="register.timeLength"></td>
+    </tr>
+    <tr>
+      <td>Case</td>
+      <td ng-hide="registerEdit">{{task.case_name}}</td>
+      <td ng-show="registerEdit">
+        <input type="text" placeholder="Case" ng-model="register.caseName" typeahead="case.name for case in cases | filter:$viewValue | limitTo:20" class="form-control" typeahead-on-select="selectRegisterCase($item, $model, $label, task)">
+      </td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td ng-hide="registerEdit">{{formatDate(task.register_info.date_entered)}}</td>
+      <td ng-show="registerEdit"><input type="text" class="form-control" ng-model="register.date"></td>
+    </tr>
+  </table>
+  <div style="text-align: right;" ng-show="registerEdit">
+    <button ng-click="registerEdit = false; updateRegister()" class="btn btn-success btn-sm">Save</button>
+    <p>
+      <small>This only updates these 3 parameters</small>
+    </p>
+  </div>
+  <span class="edit-register-info"><span ng-show="saving_to_crm" class="saving-to-crm"><span class="glyphicon glyphicon-cloud-upload"></span></span></span>
+</form>

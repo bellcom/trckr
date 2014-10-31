@@ -9,41 +9,59 @@ angular.module('trckr')
     tx.executeSql("CREATE TABLE IF NOT EXISTS `register_info` (`id` INTEGER PRIMARY KEY NOT NULL UNIQUE, `task_id` INTEGER, `date_entered` INTEGER, `case_id` VARCHAR NOT NULL, `sugar_id` VARCHAR NOT NULL, `time_length` VARCHAR)");
   });
 
-  function getTasks(timeFrom, timeTo) {
+  /**
+   * Fetch tasks.
+   */
+  function getTasks(timeFrom, timeTo, unregistered) {
     var deferred = $q.defer();
+    var sql = "";
+    var data = [];
 
-    var sql = "SELECT * FROM tasks WHERE created > ? AND created < ?";
-    var data = [timeFrom, timeTo];
-
+    // Get a list of tasks for the selected period.
     dbService.tasks = {};
     db.transaction(function(tx) {
+      sql = "SELECT * FROM tasks WHERE created > ? AND created < ?";
+      data = [timeFrom, timeTo];
+
       tx.executeSql(sql, data, function(tx, rs) {
         for(var i=0; i<rs.rows.length; i++) {
           var row = rs.rows.item(i);
-          dbService.tasks[row.id] = { id: row.id,
-                            task: row.task,
-                            created: row.created,
-                            description: row.description,
-                            case_id: row.case_id,
-                            case_name: row.case_name
-          };
+
+          if (dbService.tasks[row.id] === undefined) {
+            dbService.tasks[row.id] = {
+              id: row.id,
+              task: row.task,
+              created: row.created,
+              description: row.description,
+              case_id: row.case_id,
+              case_name: row.case_name
+            };
+          }
         }
-        setTimeEntries().then(function(){
-          deferred.resolve(dbService.tasks);
-        });
-        setRegisterInfo();
       });
-    });
 
-    // Get tasks stuff
-    return deferred.promise;
-  }
+      // If selected, get all tasks that are not registered, regardless of date.
+      if (unregistered) {
+        sql = "SELECT * FROM tasks AS T LEFT JOIN register_info AS R ON T.id = R.task_id WHERE R.task_id IS NULL";
+        tx.executeSql(sql, [], function(tx, rs) {
+          for(var i=0; i<rs.rows.length; i++) {
+            var row = rs.rows.item(i);
 
-  function setTimeEntries() {
-    var deferred = $q.defer();
-    var sql = "SELECT * FROM time_entries";
+            if (dbService.tasks[row.id] === undefined) {
+              dbService.tasks[row.id] = {
+                id: row.id,
+                task: row.task,
+                created: row.created,
+                description: row.description,
+                case_id: row.case_id,
+                case_name: row.case_name
+              };
+            }
+          }
+        });
+      }
 
-    db.transaction(function(tx) {
+      sql = "SELECT * FROM time_entries";
       tx.executeSql(sql, [], function(tx, rs) {
         for(var i=0; i<rs.rows.length; i++) {
           var row = rs.rows.item(i);
@@ -63,18 +81,10 @@ angular.module('trckr')
               dbService.tasks[task_id].time_entries[row.id].stop = row.stop;
             }
           }
-
         }
-        deferred.resolve();
       });
-    });
-    return deferred.promise;
-  }
 
-  function setRegisterInfo(){
-    var sql = "SELECT * FROM register_info";
-
-    db.transaction(function(tx) {
+      sql = "SELECT * FROM register_info";
       tx.executeSql(sql, [], function(tx, rs) {
         for(var i=0; i<rs.rows.length; i++) {
           var row = rs.rows.item(i);
@@ -85,14 +95,17 @@ angular.module('trckr')
             dbService.tasks[task_id].register_info.registered = true;
           }
         }
+
+        deferred.resolve(dbService.tasks);
       });
     });
+    return deferred.promise;
   }
 
   var dbService = {
     tasks: {},
-    getTasks: function(timeFrom, timeTo) {
-      return getTasks(timeFrom, timeTo);
+    getTasks: function(timeFrom, timeTo, unregistered) {
+      return getTasks(timeFrom, timeTo, unregistered);
     },
     getTimeEntries: function(task_id) {
       var deferred = $q.defer();
@@ -235,6 +248,38 @@ angular.module('trckr')
 
       // @todo: redo the calculation of minutes
       task.total = calculate_total_for_task(task);
+
+      var data = {
+        login: {
+          endpoint: localStorage.crmEndpoint,
+          user: localStorage.crmUsername,
+          pass: localStorage.crmPassword
+        },
+        task: task
+      };
+
+      $.post(localStorage.trckrServer + '/trckr.php?q=register', data).success(function(data){
+        if(data.status === "success"){
+          dbService.tasks[task.id].register_info = {};
+          dbService.tasks[task.id].register_info.case_id = data.message.case_id;
+          dbService.tasks[task.id].register_info.sugar_id = data.message.crm_id;
+          dbService.tasks[task.id].register_info.date_entered = data.message.timestamp;
+          dbService.tasks[task.id].register_info.time_length = data.message.time_length;
+          dbService.saveRegiserInfo(dbService.tasks[task.id]);
+
+          deferred.resolve({'registered': true});
+        }
+      });
+      return deferred.promise;
+    },
+    updateRegisterTask: function(info) {
+      var deferred = $q.defer();
+      var task = {};
+      task.total = info.timeLength;
+      task.entry_id = info.id;
+      task.case_id = info.case_id;
+      task.created = info.time;
+      task.id = info.task_id;
 
       var data = {
         login: {

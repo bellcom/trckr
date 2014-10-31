@@ -4,22 +4,41 @@
 angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $http, $modal, dbService, $rootScope) {
   $scope.dateFrom = new Date();
   $scope.dateTo = new Date();
+  $scope.alwaysIncludeUnregistered = true;
+  $scope.rowDate = '';
 
   var timeFrom = 0;
   var timeTo = 0;
 
   $scope.$watch('dateFrom', function(){
-    timeFrom = new XDate($scope.dateFrom).clearTime().getTime();
+    dateFrom = new XDate($scope.dateFrom);
+    dateTo = new XDate($scope.dateTo);
+    timeFrom = dateFrom.clearTime().getTime();
+    timeTo = dateTo.setHours(23).setMinutes(59).getTime();
+
+    if (dateFrom.diffMinutes(dateTo) < 0) {
+      $scope.dateTo = dateFrom;
+    }
+
     getTasks(timeFrom, timeTo);
   });
 
   $scope.$watch('dateTo', function(){
-    timeTo = new XDate($scope.dateTo).setHours(23).setMinutes(59).getTime();
+    dateFrom = new XDate($scope.dateFrom);
+    dateTo = new XDate($scope.dateTo);
+    timeFrom = dateFrom.clearTime().getTime();
+    timeTo = dateTo.setHours(23).setMinutes(59).getTime();
+
+    if (dateFrom.diffMinutes(dateTo) < 0) {
+      $scope.dateFrom = dateTo;
+    }
+
     getTasks(timeFrom, timeTo);
   });
 
   function getTasks(timeFrom, timeTo) {
-    dbService.getTasks(timeFrom, timeTo).then(function(data){
+    var unregistered = $scope.alwaysIncludeUnregistered;
+    dbService.getTasks(timeFrom, timeTo, unregistered).then(function(data){
       $scope.tasks = {};
       $scope.tasks = data;
     });
@@ -28,6 +47,21 @@ angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $h
   $scope.$on('addedTask', function(event){
     getTasks(timeFrom, timeTo);
   });
+
+  $scope.showDate = function(task) {
+    date = new XDate(task.created).toString('dd/MM/yy');
+    if (date !== $scope.rowDate) {
+      $scope.rowDate = date;
+
+      return true;
+    }
+    return false;
+  };
+
+  $scope.resetDate = function() {
+    $scope.dateFrom = new Date();
+    $scope.dateTo = new Date();
+  };
 
   $scope.startTask = function(task_id) {
     dbService.startTime(task_id);
@@ -88,9 +122,9 @@ angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $h
     return calculate_total_for_task(task);
   };
 
+  // Refresh page, make the counter run.
   function fireDigest() {
-      $timeout(fireDigest, 30000);
+      $timeout(fireDigest, 1500);
   }
   fireDigest();
-
 });
