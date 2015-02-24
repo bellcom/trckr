@@ -89,8 +89,9 @@ angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $h
       }
     });
     modalInstance.result.then(function (selectedItem) {
-      $rootScope.$broadcast('addedTask');
-      $scope.new_task = selectedItem;
+      setTimeout(function(){
+        $rootScope.$broadcast('addedTask');
+      }, 200);
     }, function () {
     });
   };

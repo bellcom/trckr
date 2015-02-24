@@ -4,7 +4,7 @@ var gui = require('nw.gui'); //or global.window.nwDispatcher.requireNwGui() (see
 // Get the current window
 var win = gui.Window.get();
 
-angular.module('trckr', ['ui.bootstrap', 'ngRoute']);
+angular.module('trckr', ['ui.bootstrap', 'ngRoute', 'utils.autofocus']);
 
 /**
  * Route provider
@@ -12,9 +12,13 @@ angular.module('trckr', ['ui.bootstrap', 'ngRoute']);
 angular.module('trckr').config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
-      when('/', {
+      when('/list', {
         templateUrl: 'templates/list/pageTaskList.html',
         controller: 'TaskListCtrl'
+      }).
+      when('/faciendo', {
+        templateUrl: 'templates/faciendo/pageFaciendo.html',
+        controller: 'FaciendoCtrl'
       }).
       when('/caseoverview', {
         templateUrl: 'templates/overview/pageCaseOverview.html',
@@ -25,7 +29,7 @@ angular.module('trckr').config(['$routeProvider',
         controller: 'SettingsCtrl'
       }).
       otherwise({
-        redirectTo: '/'
+        redirectTo: '/list'
       });
   }
 ]);
@@ -35,6 +39,26 @@ angular.module('trckr').filter('object2Array', function() {
     return _.toArray(input);
   };
 });
+
+/**
+ * the HTML5 autofocus property can be finicky when it comes to dynamically loaded
+ * templates and such with AngularJS. Use this simple directive to
+ * tame this beast once and for all.
+ *
+ * Usage:
+ * <input type="text" autofocus>
+ */
+angular.module('utils.autofocus', [])
+  .directive('autofocus', ['$timeout', function($timeout) {
+    return {
+      restrict: 'A',
+      link : function($scope, $element) {
+        $timeout(function() {
+          $element[0].focus();
+        });
+      }
+    };
+  }]);
 
 /**
  * Calculate number of minutes in formatted time (00:10).
@@ -106,5 +130,3 @@ Mousetrap.bind(['command+n', 'ctrl+n'], function(e) {
   $('#js-add-task').click();
   return false;
 });
-
-

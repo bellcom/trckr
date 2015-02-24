@@ -9,8 +9,11 @@
     <link href="css/app.css" rel="stylesheet">
 
     <script src="vendor/underscore/underscore.js"></script>
+    <script src="vendor/date/date.js"></script>
+    <script>var fuzzyDate = date; date = null;</script>
     <script src="vendor/xdate/xdate.js"></script>
     <script src="vendor/mousetrap/mousetrap.js"></script>
+    <script src="vendor/drupal-client/build/drupal.min.js"></script>
     <script src="vendor/jquery/dist/jquery.min.js"></script>
     <script src="vendor/angular/angular.js"></script>
     <script src="vendor/angular-route/angular-route.js"></script>
@@ -20,6 +23,7 @@
     <script src="js/controllers/CaseOverviewCtrl.js"></script>
     <script src="js/controllers/TaskListCtrl.js"></script>
     <script src="js/controllers/ModalCreateCtrl.js"></script>
+    <script src="js/controllers/FaciendoCtrl.js"></script>
     <script src="js/controllers/SettingsCtrl.js"></script>
     <script src="js/services/dbService.js"></script>
     <script src="js/services/extService.js"></script>
@@ -28,10 +32,11 @@
     <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
         <div ng-controller="CreateCtrl" >
-          <a class="btn btn-sm" href="#"><span class="glyphicon glyphicon-home"></span> Overview</a>
+          <a class="btn btn-sm" href="#/list"><span class="glyphicon glyphicon-home"></span> Overview</a>
           <a class="btn btn-sm" href="#/caseoverview"><span class="glyphicon glyphicon-list"></span> Case-dump</a>
+          <a class="btn btn-sm" href="#/faciendo"><span class="glyphicon glyphicon-check"></span> Faciendo+</a>
           <a class="btn btn-sm" href="#/settings"><span class="glyphicon glyphicon-wrench"></span> Settings</a>
-          <span class="btn btn-sm btn-success pull-right" id="js-add-task" ng-click="modal()"><span class="glyphicon glyphicon-plus"></span> Add</span>
+          <span class="btn btn-sm btn-success pull-right" id="js-add-task" ng-click="modal()"><span class="glyphicon glyphicon-plus"></span> Add &lt;C-n&gt;</span>
         </div>
       </div><!-- /.container-fluid -->
       <a class="sneaky-dev-console" onclick="win.showDevTools();"></a>

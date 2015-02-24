@@ -118,9 +118,9 @@ angular.module('trckr').controller('ModalCreateCtrl', function($scope, $http, $m
   $scope.formatDate = function(timestamp) {
     if (timestamp < 2000000000) {
       timestamp = timestamp * 1000;
+      return new XDate(timestamp).toString('H:mm:ss dd/MM/yy');
     }
-    return new XDate(timestamp).toString('H:mm:ss dd/MM/yy');
-  }
+  };
 
   $scope.deleteTimeEntry = function(time_entry) {
     dbService.deleteTimeEntry(time_entry.task_id, time_entry.id);
@@ -156,7 +156,7 @@ angular.module('trckr').controller('ModalCreateCtrl', function($scope, $http, $m
     $scope.register.case_id = angular.copy($scope.task.register_info.case_id);
     $scope.register.date = $scope.formatDate($scope.task.register_info.date_entered);
     $scope.register.task_id = $scope.task.id;
-  }
+  };
 
   $scope.selectRegisterCase = function($item, $model, $label, task) {
     var case_id = $item.case_id;
@@ -165,7 +165,7 @@ angular.module('trckr').controller('ModalCreateCtrl', function($scope, $http, $m
 
     $scope.task.case_id = case_id;
     $scope.task.case_name = name;
-  }
+  };
 
   $scope.updateRegister = function() {
     // Save the new selected case on the task.
@@ -183,5 +183,5 @@ angular.module('trckr').controller('ModalCreateCtrl', function($scope, $http, $m
         $scope.saving_to_crm = false;
       }
     });
-  }
+  };
 });

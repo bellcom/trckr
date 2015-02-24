@@ -1,5 +1,5 @@
 angular.module('trckr')
-  .factory('dbService', ['$q', function($q) {
+  .factory('dbService', ['$q', '$rootScope', function($q, $rootScope) {
   var db = openDatabase('db', '1.0', 'database', 2 * 1024 * 1024);
 
   // Create tables
@@ -42,18 +42,18 @@ angular.module('trckr')
 
       // If selected, get all tasks that are not registered, regardless of date.
       if (unregistered) {
-        sql = "SELECT * FROM tasks AS T LEFT JOIN register_info AS R ON T.id = R.task_id WHERE R.task_id IS NULL";
+        sql = "SELECT T.id AS t_id, T.case_id AS t_case_id, * FROM tasks AS T LEFT JOIN register_info AS R ON T.id = R.task_id WHERE R.task_id IS NULL";
         tx.executeSql(sql, [], function(tx, rs) {
           for(var i=0; i<rs.rows.length; i++) {
             var row = rs.rows.item(i);
 
-            if (dbService.tasks[row.id] === undefined) {
-              dbService.tasks[row.id] = {
-                id: row.id,
+            if (row.t_id && dbService.tasks[row.t_id] === undefined) {
+              dbService.tasks[row.t_id] = {
+                id: row.t_id,
                 task: row.task,
                 created: row.created,
                 description: row.description,
-                case_id: row.case_id,
+                case_id: row.t_case_id,
                 case_name: row.case_name
               };
             }
@@ -96,8 +96,9 @@ angular.module('trckr')
           }
         }
 
-        deferred.resolve(dbService.tasks);
       });
+
+      deferred.resolve(dbService.tasks);
     });
     return deferred.promise;
   }
@@ -132,6 +133,16 @@ angular.module('trckr')
     saveTask: function(task) {
       var sql = '';
       var data = [];
+
+      if (task.task === undefined) {
+        task.task = '';
+      }
+      if (task.description === undefined) {
+        task.description = '';
+      }
+      if (task.case_name === undefined) {
+        task.case_name = '';
+      }
 
       if (task.id === undefined) {
 
@@ -199,6 +210,7 @@ angular.module('trckr')
     },
     endAllTimeEntries: function() {
       var deferred = $q.defer();
+      tasks = angular.copy(dbService.tasks);
 
       angular.forEach(dbService.tasks, function(value, key){
         if (value.active) {
@@ -268,6 +280,9 @@ angular.module('trckr')
           dbService.saveRegiserInfo(dbService.tasks[task.id]);
 
           deferred.resolve({'registered': true});
+        }
+        else {
+          $rootScope.$broadcast('displayError', data);
         }
       });
       return deferred.promise;

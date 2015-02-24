@@ -1,0 +1,28 @@
+{
+  "name": "drupal-client",
+  "version": "0.2.2",
+  "homepage": "https://github.com/jbeuckm/drupal-client",
+  "authors": [
+    "joe <joe@beigerecords.com>"
+  ],
+  "description": "Javascript client for Drupal 7 + Services module",
+  "main": "lib/drupal.js",
+  "license": "Don't read software licenses. Don't write software licenses.",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.2.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.2",
+    "commit": "656456869d30ccf9975a0828042ef0e54e0a0b09"
+  },
+  "_source": "git://github.com/jbeuckm/drupal-client.git",
+  "_target": "~0.2.2",
+  "_originalSource": "drupal-client",
+  "_direct": true
+}
