@@ -2,4 +2,7 @@
 /nw
 /node_modules
 /src/components
+/cache/build
+/cache/dist
+/cache/node-webkit-*
 *.swp
