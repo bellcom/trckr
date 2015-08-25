@@ -1,50 +1,8 @@
-<div class="">
-  <div class="">
-    <div class="col-md-12">
-      <div class="row">
-        <form class="form-inline" ng-submit="saveTask()">
-          <div class="col-xs-11">
-            <input class="form-control input-sm" placeholder="Task" ng-model="input.Task"></input>
-            <input class="form-control input-sm" placeholder="Tags" ng-model="input.Tags" typeahead="tag.tag for tag in tags | filter:$viewValue | limitTo:9"></input>
-            <input class="form-control input-sm" placeholder="Note" ng-model="input.Note"></input>
-            <input class="form-control input-sm" placeholder="When" ng-model="tempDate" ng-keyup="parseDateString()"></input>
-          </div>
-          <button class="btn btn-sm btn-success"><span class="glyphicon glyphicon-ok-sign"></span></button>
-
-        </form>
-      </div>
-      <div class="well well-sm" style="display: inline-block">
-        <datepicker ng-model="input.Date" min-date="minDate" show-weeks="true" style="float: left"></datepicker>
-        <timepicker ng-model="input.Date" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></timepicker>
-      </div>
+<div ng-controller="DisplayCtrl">
+  <div ng-repeat="list in showLists">
+    <div class="col-md-{{colSize}}">
+      <b>{{list.name}}</b>
+      <div ng-include ng-controller="FaciendoCtrl" src="'templates/faciendo/pageFaciendo.html'"></div>
     </div>
   </div>
-  <table class="table table-condensed">
-    <tr ng-repeat-start="task in tasks">
-      <td colspan="4" ng-if="showDate(task)">
-        <b>{{task.dueStr}}</b>
-      </td>
-    <tr ng-repeat-end>
-      <td>
-        <div class="checkbox" style="margin: 0">
-          <label>
-            <input type="checkbox" ng-click="completeTask(task)">
-            <small><span class="label label-default">{{task.tags}}</span></small>
-            {{task.title}}
-          </label>
-        </div>
-      </td>
-      <td>
-
-      <button popover-placement="left" popover="{{task.noteText}}" ng-if="task.note" class="btn btn-default btn-xs">+</button>
-      </td>
-      <td style="width: 90px;">
-        <div class="btn-group">
-          <span class="btn btn-xs btn-default" ng-click="taskEdit(task)"><span class="glyphicon glyphicon-edit"></span></span>
-          <span class="btn btn-xs btn-danger" ng-click="task.confirmdelete = !task.confirmdelete"><span class="glyphicon glyphicon-trash"></span></span>
-          <span class="btn btn-xs btn-default" ng-if="task.confirmdelete" ng-click="deleteTask(task)"><span class="glyphicon glyphicon-ok"></span></span>
-        </div>
-      </td>
-    </tr>
-  </table>
 </div>

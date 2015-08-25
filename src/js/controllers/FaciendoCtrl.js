@@ -1,47 +1,63 @@
 angular.module('trckr')
-  .controller('FaciendoCtrl', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
+  .controller('FaciendoCtrl', ['$scope', '$http', '$interval', '$rootScope', 'dbService', 'extService', function($scope, $http, $interval, $rootScope, dbService, extService) {
 
-    function authenticateDrupal() {
-      var drupal = new Drupal();
+    $scope.listId = localStorage.faciendoListId;
 
-      drupal.setRestPath(localStorage.intranetUrl + '/', "faciendo");
+    extService.getTasks().then(function(data){
+      $scope.stories = data;
+    });
 
-      drupal.login(localStorage.intranetUsername, localStorage.intranetPassword,
-          function(userData) {
-              console.log('User ' + userData.uid + ' has logged in.');
-          },
-          function(err){
-              console.log('login failed.');
-          }
-      );
+    $scope.casesIndexed = [];
+
+    function loadCases() {
+      extService.getCases().then(function(data) {
+        $scope.cases = data;
+
+        angular.forEach(data, function(value, key) {
+          $scope.casesIndexed[value.case_id] = value.name;
+        });
+        angular.forEach($scope.tasks, function(value, key) {
+          value.caseName = $scope.casesIndexed[value.taskref];
+        });
+      });
     }
-    authenticateDrupal();
 
     function resetInput() {
       $scope.input = {};
       $scope.input.Date = new Date();
-      $scope.tempDate = '';
     }
     resetInput();
 
     function loadTasks() {
-      $http.get(localStorage.intranetUrl + '/mytinytodo/ajax?loadTasks&sort=1&list=' + localStorage.faciendoListId)
+      $http.get(localStorage.intranetUrl + '/mytinytodo/ajax?loadTasks&sort=1&list=' + $scope.listId)
         .then(function(res){
+          console.log(res.data.list);
           $scope.tasks = res.data.list;
         });
+      loadCases();
     }
     loadTasks();
+    loadCases();
 
     $interval(function(){
       loadTasks();
-      authenticateDrupal();
     }, 1000 * 60 * 5);
 
-
-    $http.get(localStorage.intranetUrl + '/mytinytodo/ajax?tagCloud&list=' + localStorage.faciendoListId)
+    $http.get(localStorage.intranetUrl + '/mytinytodo/ajax?tagCloud&list=' + $scope.listId)
       .then(function(res){
         $scope.tags = res.data.cloud;
       });
+
+    $scope.startFaciendoTask = function(faciendoTask) {
+      var task = {};
+      task.task = faciendoTask.title;
+      task.description = faciendoTask.tags;
+      task.case_id = faciendoTask.taskref;
+      task.case_name = faciendoTask.caseName;
+
+      dbService.saveTask(task);
+      $rootScope.$broadcast('addedTask');
+    };
 
     $scope.showDate = function(task) {
       date = new XDate(task.duedate).toString('dd/MM/yy');
@@ -54,7 +70,7 @@ angular.module('trckr')
     };
 
     $scope.parseDateString = function() {
-      $scope.input.Date = fuzzyDate($scope.tempDate);
+      $scope.input.Date = fuzzyDate($scope.input.TempDate);
     };
 
     $scope.taskEdit = function(task) {
@@ -112,15 +128,20 @@ angular.module('trckr')
     };
 
     $scope.saveTask = function() {
+      // Hide the add form
+      $scope.addFaciendoTask = null;
+
       xdate = new XDate($scope.input.Date);
       var duedate = (xdate.getMonth() + 1)  + '/' + xdate.getDate() + '/' + xdate.getFullYear();
 
       var data = {
-        list: localStorage.faciendoListId,
+        list: $scope.listId,
         title: $scope.input.Task,
         note: $scope.input.Note,
         duedate: duedate,
         tags: $scope.input.Tags,
+        // Wrong name for the field. But hey, we will manage.
+        taskref: $scope.input.CaseId,
         fid: 1
       };
 
@@ -135,7 +156,7 @@ angular.module('trckr')
         url = localStorage.intranetUrl + '/mytinytodo/ajax?fullNewTask';
       }
 
-      // Send the task to faciendooook
+      // Send the task to faciendo
       $http({
           method: 'POST',
           url: url,
@@ -146,5 +167,9 @@ angular.module('trckr')
       });
 
       resetInput();
+    };
+
+    $scope.selectCase = function($item, $model, $label, input) {
+      input.CaseId = $item.case_id;
     };
   }]);

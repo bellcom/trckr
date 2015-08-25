@@ -145,16 +145,17 @@ angular.module('trckr')
       }
 
       if (task.id === undefined) {
-
         var id = null;
         var created = new Date().getTime();
         sql = "INSERT INTO tasks(id, task, description, case_name, case_id, created) VALUES (?, ?, ?, ?, ?, ?)";
         data = [id, task.task, task.description, task.case_name, task.case_id, created];
+
+        // If this is a new task. The timer will be started.
+        dbService.endAllTimeEntries();
       }
       else {
         sql = "Update tasks SET task = ?, description = ?, case_name = ?, case_id = ? WHERE id = ?";
         data = [task.task, task.description, task.case_name, task.case_id, task.id];
-
       }
       db.transaction(function(tx) {
         tx.executeSql(sql, data, function(transaction, result){
@@ -192,6 +193,7 @@ angular.module('trckr')
 
       return deferred.promise;
     },
+    // Start the timer for a task.
     startTime: function(task_id) {
       dbService.endAllTimeEntries().then(function(){
         var start = new Date().getTime();
@@ -208,9 +210,9 @@ angular.module('trckr')
         });
       });
     },
+    // End timetaking for all entries.
     endAllTimeEntries: function() {
       var deferred = $q.defer();
-      tasks = angular.copy(dbService.tasks);
 
       angular.forEach(dbService.tasks, function(value, key){
         if (value.active) {

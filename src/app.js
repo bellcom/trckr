@@ -41,6 +41,29 @@ angular.module('trckr').filter('object2Array', function() {
 });
 
 /**
+ * Authenticate with drupal, needed for faciendo integration.
+ */
+function authenticateDrupal() {
+  var drupal = new Drupal();
+
+  drupal.setRestPath(localStorage.intranetUrl + '/', "faciendo");
+
+  drupal.login(localStorage.intranetUsername, localStorage.intranetPassword,
+      function(userData) {
+          console.log('User ' + userData.uid + ' has logged in.');
+      },
+      function(err){
+          console.log('login failed.');
+      }
+  );
+}
+authenticateDrupal();
+
+setInterval(function(){
+  authenticateDrupal();
+}, 1000 * 60 * 5);
+
+/**
  * the HTML5 autofocus property can be finicky when it comes to dynamically loaded
  * templates and such with AngularJS. Use this simple directive to
  * tame this beast once and for all.
@@ -59,6 +82,13 @@ angular.module('utils.autofocus', [])
       }
     };
   }]);
+
+/**
+ * A Controller that should not be here.
+ */
+angular.module('trckr').controller('ModalErrorCtrl', function($scope, $modalInstance, error) {
+  $scope.message = error.message.msg;
+});
 
 /**
  * Calculate number of minutes in formatted time (00:10).
@@ -122,11 +152,3 @@ function calculate_minutes_for_time_entry(time_entry) {
 
   return minutes;
 }
-
-/**
- * Mousetrap stuff
- */
-Mousetrap.bind(['command+n', 'ctrl+n'], function(e) {
-  $('#js-add-task').click();
-  return false;
-});

@@ -45,45 +45,6 @@ angular.module('trckr').controller('CaseOverviewCtrl', function($scope, $filter,
   };
 });
 
-/**
- * Main page controller.
- */
-angular.module('trckr').controller('CreateCtrl', function($scope, $http, $modal, $rootScope, dbService) {
-  $rootScope.$on('displayError', function(event, data) {
-    var modalInstance = $modal.open({
-      templateUrl: 'templates/modalError.html',
-      controller: 'ModalErrorCtrl',
-      size: 'sm',
-      resolve: {
-        error: function () {
-          return data;
-        }
-      }
-    });
-  });
-
-  $scope.modal = function() {
-    var modalInstance = $modal.open({
-      templateUrl: 'templates/add/modalAddTask.html',
-      controller: 'ModalCreateCtrl',
-      size: 'lg',
-      resolve: {
-        task: function () {
-          return {};
-        }
-      }
-    });
-    modalInstance.result.then(function (selectedItem) {
-      setTimeout(function(){
-        $rootScope.$broadcast('addedTask');
-      }, 100);
-      $scope.new_task = selectedItem;
-    }, function () {
-    });
-  };
-});
-
-
 angular.module('trckr').controller('ModalErrorCtrl', function($scope, $modalInstance, error) {
   $scope.message = error.message.msg;
 });

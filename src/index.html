@@ -20,6 +20,10 @@
     <script src="vendor/angular-bootstrap/ui-bootstrap.js"></script>
     <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="app.js"></script>
+    <script src="js/mousetrapBindings.js"></script>
+    <script src="js/controllers/MenuCtrl.js"></script>
+    <script src="js/controllers/CaseOverviewCtrl.js"></script>
+    <script src="js/controllers/DisplayCtrl.js"></script>
     <script src="js/controllers/CaseOverviewCtrl.js"></script>
     <script src="js/controllers/TaskListCtrl.js"></script>
     <script src="js/controllers/ModalCreateCtrl.js"></script>
@@ -28,19 +32,27 @@
     <script src="js/services/dbService.js"></script>
     <script src="js/services/extService.js"></script>
   </head>
-  <body>
+  <body ng-controller="MenuCtrl">
     <nav class="navbar navbar-default" role="navigation">
       <div class="container-fluid">
-        <div ng-controller="CreateCtrl" >
+        <div>
           <a class="btn btn-sm" href="#/list"><span class="glyphicon glyphicon-home"></span> Overview</a>
           <a class="btn btn-sm" href="#/caseoverview"><span class="glyphicon glyphicon-list"></span> Case-dump</a>
-          <a class="btn btn-sm" href="#/faciendo"><span class="glyphicon glyphicon-check"></span> Faciendo+</a>
+          <!--          <a class="btn btn-sm" href="#/faciendo"><span class="glyphicon glyphicon-check"></span> Faciendo+</a>-->
           <a class="btn btn-sm" href="#/settings"><span class="glyphicon glyphicon-wrench"></span> Settings</a>
           <span class="btn btn-sm btn-success pull-right" id="js-add-task" ng-click="modal()"><span class="glyphicon glyphicon-plus"></span> Add &lt;C-n&gt;</span>
         </div>
       </div><!-- /.container-fluid -->
       <a class="sneaky-dev-console" onclick="win.showDevTools();"></a>
     </nav>
-    <div ng-view></div>
+
+    <div class="page-container">
+      <div class="col-md-{{colWidth}}">
+        <div ng-view></div>
+      </div>
+      <div class="col-md-{{colWidth}}" ng-if="showFaciendo">
+        <div ng-include ng-controller="FaciendoCtrl" src="'templates/faciendo/listFaciendo.html'"></div>
+      </div>
+    </div>
   </body>
 </html>
