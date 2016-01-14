@@ -152,3 +152,20 @@ function calculate_minutes_for_time_entry(time_entry) {
 
   return minutes;
 }
+
+/**
+ * Create 'Edit' and 'Window' menu on Mac OS
+ */
+var menu = new gui.Menu({ type: 'menubar' });
+
+// Create sub-menu
+var menuItems = new gui.Menu();
+
+// create MacBuiltin
+menu.createMacBuiltin('Trckr',{
+    hideEdit: false,
+    hideWindow: false
+});
+
+// Append Menu to Window
+gui.Window.get().menu = menu;
