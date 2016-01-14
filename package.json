@@ -2,7 +2,7 @@
   "name": "trckr",
   "version": "1.10.0",
   "devDependencies": {
-    "grunt-node-webkit-builder": "~0.1.14",
+    "grunt-nw-builder": "~2.0.0",
     "grunt-contrib-compress": "~0.5.3",
     "grunt-contrib-jshint": "~0.8.0"
   }

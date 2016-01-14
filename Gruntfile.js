@@ -1,21 +1,17 @@
 module.exports = function(grunt){
   grunt.initConfig({
-    nodewebkit: {
+    nwjs: {
       options: {
-          version: '0.8.6',
-          build_dir: './build',
-          mac: true,
-          win: false,
-          linux32: false,
-          linux64: true,
-          keep_nw: true
+        platforms: ['win64','osx64', 'linux64'],
+        buildDir: './build', // Where the build version of my NW.js app is saved
+        version: '0.12.3',
       },
-      src: ['./src/**/*'] // Your node-wekit app
+      src: ['./src/**/*'] // Your NW.js app
     },
     compress: {
       mac: {
         options: {
-          archive: 'build/trckr-osx-ia32.zip'
+          archive: 'build/trckr-osx-x64.zip'
         },
         files: [{
           expand: true,
@@ -43,13 +39,13 @@ module.exports = function(grunt){
     }
   });
 
-  grunt.loadNpmTasks('grunt-node-webkit-builder');
+  grunt.loadNpmTasks('grunt-nw-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // By default build and create archives
   grunt.registerTask('default', [
-    'nodewebkit',
+    'nwjs',
     'compress'
   ]);
 };
