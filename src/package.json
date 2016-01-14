@@ -1,9 +1,9 @@
 {
-  "name": "Trckr-1.0",
+  "name": "Trckr",
   "main": "index.html",
-  "version": "1.10.1",
+  "version": "2.0.0",
   "window": {
     "toolbar" : false,
-    "icon": "img/icon.png"
+    "icon": "icons/bellcom.png"
   }
 }

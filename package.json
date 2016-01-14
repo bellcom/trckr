@@ -1,6 +1,6 @@
 {
   "name": "trckr",
-  "version": "1.10.0",
+  "version": "2.0.0",
   "devDependencies": {
     "grunt-nw-builder": "~2.0.0",
     "grunt-contrib-compress": "~0.5.3",
