@@ -2,7 +2,7 @@ module.exports = function(grunt){
   grunt.initConfig({
     nwjs: {
       options: {
-        platforms: ['win64','osx64', 'linux64'],
+        platforms: ['osx64', 'linux64'],
         buildDir: './build', // Where the build version of my NW.js app is saved
         version: '0.12.3',
         macIcns: 'src/icons/bellcom.icns',
