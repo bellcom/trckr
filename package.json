@@ -1,10 +1,23 @@
 {
-  "name": "trckr",
+  "name": "Trckr",
+  "main": "index.html",
   "version": "2.0.0",
+  "dependencies": {
+    "nw": "~0.12.3"
+  },
   "devDependencies": {
-    "grunt-nw-builder": "~2.0.0",
+    "bower": "~1.7.2",
     "grunt-contrib-compress": "~0.5.3",
     "grunt-contrib-jshint": "~0.8.0",
-    "grunt": "~0.4.5"
+    "grunt-nw-builder": "~2.0.0",
+    "grunt": "~0.4.5",
+    "nw-dev": "~1.3.1"
+  },
+  "window": {
+    "toolbar" : false,
+    "icon": "icons/bellcom.png"
+  },
+  "scripts": {
+    "start": "nw"
   }
 }

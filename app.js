@@ -4,6 +4,11 @@ var gui = require('nw.gui'); //or global.window.nwDispatcher.requireNwGui() (see
 // Get the current window
 var win = gui.Window.get();
 
+if (!win.shown) {
+  win.show();
+  win.shown = true;
+}
+
 angular.module('trckr', ['ui.bootstrap', 'ngRoute', 'utils.autofocus']);
 
 /**

@@ -1,7 +1,7 @@
 /build
 /nw
 /node_modules
-/src/components
+/components
 /cache
 *.swp
 *.DS_Store
