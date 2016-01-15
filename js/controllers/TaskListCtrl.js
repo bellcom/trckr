@@ -84,7 +84,7 @@ angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $h
       var notification = new Notification("Husk at tracke din tid", notificationOptions);
       notification.onclick = function () {
         gui.Window.get();
-      }
+      };
     }, 1000 * 60 * 10);
   };
 

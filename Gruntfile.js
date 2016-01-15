@@ -3,39 +3,34 @@ module.exports = function(grunt){
     nwjs: {
       options: {
         platforms: ['osx64', 'linux64'],
-        buildDir: './build', // Where the build version of my NW.js app is saved
+        buildDir: 'build',
         version: '0.12.3',
-        macIcns: 'src/icons/bellcom.icns',
+        macIcns: 'icons/bellcom.icns',
       },
-      src: ['./src/**/*'] // Your NW.js app
+      src: ['**/*']
     },
     compress: {
       mac: {
-        options: {
-          archive: 'build/trckr-osx-x64.zip'
-        },
+        options: { archive: 'build/trckr-osx-x64.zip' },
         files: [{
           expand: true,
-          cwd: './build/releases/Trckr/mac/',
+          cwd: 'build/trckr/osx64/',
           src: ['**/*'],
         }]
       },
       linux: {
-        options: {
-          archive: 'build/trckr-linux-x64.zip'
-        },
+        options: { archive: 'build/trckr-linux-x64.zip' },
         files: [{
           expand: true,
-          cwd: './build/releases/Trckr/linux64/',
+          cwd: 'build/trckr/linux64/',
           src: ['**/*'],
         }]
       }
-
     },
     jshint: {
       all: [
-        'src/app/**/*.js',
-        'src/inc/addTagger.js'
+        'app.js',
+        'js/**/*.js'
       ]
     }
   });
@@ -44,9 +39,5 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  // By default build and create archives
-  grunt.registerTask('default', [
-    'nwjs',
-    'compress'
-  ]);
+  grunt.registerTask('default', [ 'jshint', 'nwjs', 'compress' ]);
 };
