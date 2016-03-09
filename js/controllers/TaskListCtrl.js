@@ -65,7 +65,6 @@ angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $h
 
   $scope.startTask = function(task_id) {
     dbService.startTime(task_id);
-    clearTimeout($scope.reminder);
   };
 
   $scope.stopTask = function(task_id) {
@@ -75,17 +74,6 @@ angular.module('trckr').controller('TaskListCtrl', function($scope, $timeout, $h
       }
     });
     dbService.endAllTimeEntries();
-    // Remind us to track time every 10th minute if timer is not running
-    $scope.reminder = setInterval(function() {
-      var notificationOptions = {
-        body: "Du har ikke tracket din tid de sidste 10 minutter"
-      };
-
-      var notification = new Notification("Husk at tracke din tid", notificationOptions);
-      notification.onclick = function () {
-        gui.Window.get();
-      };
-    }, 1000 * 60 * 10);
   };
 
   // Send the task object to the modal
