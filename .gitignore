@@ -1,8 +1,8 @@
 /build
 /nw
 /node_modules
-/src/components
-/cache/build
-/cache/dist
-/cache/node-webkit-*
+/components
+/cache
 *.swp
+*.DS_Store
+.idea
